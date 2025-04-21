@@ -6,7 +6,7 @@
   "scripts": {
     "start": "webpack serve --mode development",
     "start-dev": "webpack serve --config webpack.dev.js --open --port 3002",
-    "build": "webpack --config webpack.config.js --mode production",
+    "build": "webpack --config webpack.prod.js",
     "serve": "http-server dist -p 3002 -a localhost --cors -P http://localhost:3002? -o index.html",
     "test": "jest"
   },
