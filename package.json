@@ -35,5 +35,6 @@
     "leaflet": "^1.9.4",
     "leaflet.markercluster": "^1.5.3",
     "regenerator-runtime": "^0.14.1"
-  }
+  },
+  "homepage": "https://muhaftharalgiffari.github.io/ProyekAkhirTahapPertama/"
 }
