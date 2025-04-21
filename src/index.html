@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="id" style="view-transition-name: root;">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="Map Talers - Platform berbagi cerita dengan lokasi">
+    <meta name="theme-color" content="#007bff">
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+    <meta name="apple-mobile-web-app-title" content="Story App" />
+    <link rel="manifest" href="app.webmanifest" />
+    <link rel="apple-touch-icon" href="/images/icons/maskable-icon-x192.png" />
+    <link rel="icon" type="image/png" href="/images/icons/maskable-icon-x192.png" />
+    
+    <!-- Preconnect to external domains -->
+    <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin>
+    <link rel="preconnect" href="https://unpkg.com" crossorigin>
+    <link rel="preconnect" href="https://story-api.dicoding.dev" crossorigin>
+    
+    <!-- Security headers -->
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'self' 'unsafe-inline' https://cdnjs.cloudflare.com https://unpkg.com; script-src 'self' 'unsafe-inline' https://unpkg.com; img-src 'self' https: data: https://cdnjs.cloudflare.com; connect-src 'self' https://story-api.dicoding.dev; font-src data: https://cdnjs.cloudflare.com;">
+    
+    <link rel="icon" href="favicon.ico">
+    <title>Map Talers</title>
+    
+    <!-- Preload critical assets -->
+    <link rel="preload" href="styles/styles.css" as="style">
+    <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" as="style">
+    <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/webfonts/fa-solid-900.woff2" as="font" type="font/woff2" crossorigin>
+    <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/webfonts/fa-brands-400.woff2" as="font" type="font/woff2" crossorigin>
+    <link rel="preload" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" as="style">
+    
+    <!-- Stylesheets -->
+    <link rel="stylesheet" href="styles/styles.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
+    <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.4.1/dist/MarkerCluster.css" />
+    <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.4.1/dist/MarkerCluster.Default.css" />
+  </head>
+  <body>
+    <!-- Skip to content -->
+    <a href="#main-content" class="skip-link">Langsung ke konten utama</a>
+
+    <!-- Notification Permission Popup -->
+    <div class="notification-permission" id="notificationPermission" role="dialog" aria-labelledby="notificationTitle">
+      <h3 id="notificationTitle">Izinkan Notifikasi</h3>
+      <p>Izinkan kami untuk mengirimkan notifikasi tentang story terbaru</p>
+      <div class="buttons">
+        <button class="allow" id="allowNotification" aria-label="Izinkan notifikasi">Izinkan</button>
+        <button class="block" id="blockNotification" aria-label="Tolak notifikasi">Nanti Saja</button>
+      </div>
+    </div>
+
+    <!-- Push Notification -->
+    <div class="push-notification" id="pushNotification" role="alert" aria-live="polite">
+      <div class="header">
+        <img src="/images/icons/maskable-icon-x192.png" alt="Logo Map Talers" class="icon" width="72" height="72">
+        <h4 class="title"></h4>
+      </div>
+      <p class="body"></p>
+      <div class="actions">
+        <button class="action-button" aria-label="Lihat notifikasi">Lihat</button>
+        <button class="close-button" aria-label="Tutup notifikasi">Tutup</button>
+      </div>
+    </div>
+
+    <header>
+      <nav class="main-header container" aria-label="Navigasi utama">
+        <a class="brand-name" href="#/" aria-label="Beranda Map Talers">Map Talers</a>
+
+        <input type="checkbox" id="menu-toggle" class="menu-toggle" aria-label="Toggle menu">
+        <label for="menu-toggle" class="drawer-button" aria-label="Toggle navigation menu">
+          <span class="menu-icon" aria-hidden="true">☰</span>
+        </label>
+
+        <div id="navigation-drawer" class="navigation-drawer" role="navigation" aria-label="Menu navigasi">
+          <ul id="nav-list" class="nav-list">
+            <!-- Menu untuk user yang sudah login -->
+            <li class="main-menu" id="main-menu" style="display: none;">
+              <a href="#/home">Beranda</a>
+              <a href="#/about">About</a>
+            </li>
+            <!-- Menu untuk user yang belum login -->
+            <li class="auth-menu" id="auth-menu">
+              <a href="#/login" id="login-link">Login</a>
+              <a href="#/register" id="register-link">Register</a>
+            </li>
+            <!-- Menu untuk user yang sudah login -->
+            <li class="user-menu" id="user-menu" style="display: none;">
+              <a href="#/home">Beranda</a>
+              <a href="#/about">About</a>
+              <a href="#/add-story">Tambah Story</a>
+              <a href="#" id="logoutLink">Logout</a>
+            </li>
+          </ul>
+        </div>
+      </nav>
+    </header>
+
+    <main id="main-content" class="main-content" tabindex="-1"></main>
+
+    <!-- Loading Component -->
+    <div id="loading" class="loading" role="alert" aria-live="polite">
+      <div class="loading-spinner" aria-hidden="true"></div>
+      <p class="loading-text">Loading...</p>
+    </div>
+
+    <!-- Scripts -->
+    <script defer src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+    <script defer src="https://unpkg.com/leaflet.markercluster@1.4.1/dist/leaflet.markercluster.js"></script>
+  </body>
+</html>

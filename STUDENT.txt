@@ -1,0 +1,2 @@
+Nama: [Muh. Afthar algiffari]
+Catatan: Aplikasi ini menggunakan OpenStreetMap sebagai penyedia peta yang tidak memerlukan API key.
